@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(30px);
+            box-shadow: 0px 0px 30px rgba(227, 228, 237, 0.37);
+            border: 2px solid rgba(225, 225, 225, 0.18);
+        }
+
+        .header .logo img {
+            width: 100px;
+            height: auto;
+        }
+
+        .header .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .nav-links a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .header .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .header .search-bar {
+            margin-left: 20px;
+        }
+
+        .header .search-bar input {
+            width: 200px;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .header .cart {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .header .cart .cart-icon {
+            font-size: 24px;
+        }
+
+        .header .cart .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        .cart-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: rgb(0, 0, 0);
+            border: 1px solid #c5bfbf;
+            width: 300px;
+            box-shadow: 0px 4px 8px rgba(189, 77, 77, 0.1);
+            z-index: 1000;
+        }
+
+        .cart-dropdown.active {
+            display: block;
+        }
+
+        .cart-dropdown .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-dropdown .cart-item h5 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .cart-dropdown .cart-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #8c7e7e;
+        }
+
+        .cart-dropdown .cart-item .remove-item {
+            cursor: pointer;
+            color: red;
+        }
+
+        .cart-dropdown .total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .cart-dropdown .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: rgb(77, 68, 68);
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #section1 {
+            background: url("p1.jpg") no-repeat center center/cover;
+            position: relative;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #section1::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: inherit;
+            filter: blur(8px);
+            z-index: 0;
+        }
+
+        #section1 > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        #section1 h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 36px;
+        }
+
+        #section1 .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #section1 .col-md-4 {
+            text-align: center;
+        }
+
+        #section1 img {
+            width: 50%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        #section1 h3 {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        #section1 p {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #section3 {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+
+        .products-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 36px;
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 20px 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+        }
+
+        .swiper-slide {
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 20px;
+            flex-shrink: 0;
+            width: 300px;
+            margin-right: 20px;
+        }
+
+        .swiper-slide img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .swiper-slide h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .swiper-slide p {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .swiper-slide .price {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .rating {
+            color: red;
+            font-size: 14px;
+        }
+
+        .swiper-pagination-bullet {
+            background: #ff6347;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #000;
+        }
+
+        #section2 {
+        padding: 60px 0;
+        background-color: #f8f9fa;
+        font-family: 'Georgia', serif;
+    }
+
+    #section2 h2 {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .add-to-cart {
+    background-color: #6a5d5d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+    background-color: #a71a22;
+}
+
+.add-to-cart i {
+    margin-right: 10px;
+}
+
+    .menu-section {
+        margin-bottom: 40px;
+    }
+
+    .menu-section h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .menu-item-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .menu-item {
+        width: 45%;
+        background-color: #fff8f0;
+        padding: 15px;
+        border: 1px solid #d4bfa3;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-item h4 {
+        font-size: 18px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+
+    .menu-item p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .menu-item .new {
+        color: #c02e1d;
+        font-weight: bold;
+    }
+
+    .new-price {
+        float: right;
+        font-weight: bold;
+        color: #c02e1d;
+    }
+    
+
+    footer {
+    background: url("p1.jpg") no-repeat center center/cover;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 10%;
+    backdrop-filter: blur(30px);
+}
+
+.footer-map iframe {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(30px);
+    box-shadow: 0px 0px 30px rgba(227, 228, 237, 0.37);
+    border: 2px solid rgba(225, 225, 225, 0.18);
+}
+
+.footer-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 60%;
+}
+
+.footer-info div {
+    margin-right: 30px;
+    margin-bottom: 20px;
+    flex: 1 1 200px;
+}
+
+.footer-info h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.footer-info p,
+.footer-info ul {
+    margin: 0;
+    font-size: 14px;
+}
+
+.footer-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-info ul li {
+    margin-bottom: 5px;
+}
+
+.footer-info ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-info ul li a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10%;
+    border-top: 1px solid #555;
+    margin-top: 20px;
+    backdrop-filter: blur(30px);
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.footer-bottom a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
+
+.social-media {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.social-media a {
+    margin-left: 10px;
+}
+
+.social-media img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .footer-content {
+        padding: 0 5%;
+    }
+
+    .footer-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-info div {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-bottom p {
+        margin-bottom: 10px;
+    }
+
+    .social-media {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-content {
+        padding: 0 2%;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+            <div class="nav-links">
+                <a href="#section1">OUR DISHES</a>
+                <a href="#section2">MENU</a>
+                <a href="#section3">WHAT'S NEW</a>
+                <div class="cart">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <span class="cart-count">0</span>
+                    <div class="cart-dropdown">
+                        <div class="cart-items">
+                            <!-- Cart items will be injected here -->
+                        </div>
+                        <div class="total">
+                            <span>Total:</span>
+                            <span class="total-amount">PKR 0</span>
+                        </div>
+                        <a href="#" class="checkout-btn">Checkout</a>
+                    </div>
+                </div>
+            </div>
+            
+    </header>
+
+
+    <section id="section1">
+        <h2>Our Special Dishes</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="dish1.avif" alt="Dish 1">
+                <h3>Mediterranean Delight</h3>
+                <p>Wraps nation signature mozzarella cheddar cheese,<br>
+                    buffalo chicken, onions, green goodies!
+                </p>
+                <button class="add-to-cart" data-name="Mediterranean Delight" data-price="1280"> <i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+            </div>
+            <div class="col-md-4">
+                <img src="dish2.jpg" alt="Dish 2">
+                <h3>Spicy Thai Wrap</h3>
+                <p>Grilled shrimp, spicy peanut sauce, shredded carrots, 
+                    <br> and fresh cilantro wrapped in a rice paper roll.
+                </p>
+                <button class="add-to-cart" data-name="Spicy Thai Wrap" data-price="1380"><i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+            </div>
+            <div class="col-md-4">
+                <img src="dish3.webp" alt="Dish 3">
+                <h3>Buffalo Ranch Chicken</h3>
+                <p>Crispy buffalo chicken, ranch dressing, shredded lettuce,
+                    <br> and diced tomatoes in a flour tortilla.
+                </p>
+                <button class="add-to-cart" data-name="Buffalo Ranch Chicken" data-price="1240"><i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="section3" class="products-section container">
+        <h2>What's New?</h2>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide product">
+                    <img src="d1.jpeg" alt="Product 1">
+                    <h3>Wrap & Snack Combo</h3>
+                    <p>Choose any wrap and get a side of chips <br> 
+                        or a small salad for just PKR 1800. The perfect meal to fuel your day!
+                    </p>
+                    <button class="add-to-cart" data-name="Wrap & Snack Combo" data-price="1800"><i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+                </div>
+                <div class="swiper-slide product">
+                    <img src="d2.jpeg" alt="Product 2">
+                    <h3>Wrap & Sweet Treat</h3>
+                    <p>Satisfy your sweet tooth with our Wrap <br>
+                        & Sweet Treat deal. Any wrap plus a dessert of your choice for PKR 1650.
+                    </p>
+                    <button class="add-to-cart" data-name="Wrap & Sweet Treat" data-price="1650"><i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+                </div>
+                <div class="swiper-slide product">
+                    <img src="d3.jpeg" alt="Product 3">
+                    <h3>Buy 1 Get 1 Free!</h3>
+                    <p>Indulge in our delicious wraps and enjoy a free wrap on us. Perfect for sharing or treating 
+                        yourself to an extra bite. Hurry, this offer is
+                        perfect for sharing or treating yourself to an extra bite. Hurry, this offer is for a limited time only!
+                    </p>
+                    <button class="add-to-cart" data-name="Buy 1 Get 1 Free!" data-price="2000"><i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+                </div>
+                <div class="swiper-slide product">
+                    <img src="d4.jpg" alt="Product 4">
+                    <h3>Happy Hour Wraps</h3>
+                    <p>Join us for Happy Hour and enjoy any wrap for just PKR 980! Available Monday to Friday,
+                         The perfect pick-me-up for your afternoon slump.
+                    </p>
+                    <button class="add-to-cart" data-name="Happy Hour Wraps" data-price="980"><i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+                </div>
+                <div class="swiper-slide product">
+                    <img src="d5.jpg" alt="Product 5">
+                    <h3>Wrap & Smoothie Combo</h3>
+                    <p>Pair your favorite wrap with a refreshing smoothie for just PKR 1200.
+                         The ultimate combo to keep you satisfied and energized.
+                    </p>
+                    <button class="add-to-cart" data-name="Wrap & Smoothie Combo" data-price="1200"><i class="fas fa-shopping-cart"></i>ADD TO CART</button>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <section id="section2">
+        <h2> MENU </h2>
+        <div class="menu-section" id="breakfast">
+            <h3> CHICKEN WRAPS </h3>
+            <div class="menu-item-container">
+                <div class="menu-item">
+                    <h4> Grilled Chicken Wrap </h4>
+                    <p>Juicy grilled chicken with fresh veggies and a tangy sauce, wrapped in a warm tortilla.
+                      <br>  Drink: Lemonade
+                       <br>  Side: Sweet potato fries
+                    </p>
+                    <p class="new"> Price: 1280 </p>
+                    <BR>
+                    <h4> Spicy Chicken Wrap </h4>
+                    <p> Spicy marinated chicken with lettuce, tomatoes, and a spicy mayo sauce,
+                    <br> Drink: Iced Tea
+                    <br> Side: Curly fries</p>
+                    <p class="new"> Price: 1380 </p>
+                </div>
+                <div class="menu-item">
+                    <h4> Chicken Caesar Wrap </h4>
+                    <p>Grilled chicken, romaine lettuce, Parmesan cheese, and Caesar dressing.
+                    <br> Drink: Sparkling Water
+                    <br> Side: Garlic fries
+                    </p>
+                    <p class="new"> Price: 1240 </p>
+
+                    <br>
+                    <h4>  Honey Mustard Chicken Wrap </h4>
+                    <p>Grilled chicken, honey mustard sauce, lettuce, shredded carrots, Swiss cheese, whole wheat wrap
+                        <br> Drink: Peach Iced Tea
+                        <br> Side: Parmesan garlic fries and onion rings
+                        </p>
+                        <p class="new"> Price: 1600 </p>
+                </div>
+            </div>
+        </div>
+        <div class="menu-section" id="lunch">
+            <h3> BEEF WRAPS </h3>
+            <div class="menu-item-container">
+                <div class="menu-item">
+                    <h4>Chipotle Beef Wrap</h4>
+                    <p>Chipotle-marinated beef, black beans, corn, shredded lettuce, cheddar cheese, chipotle sauce, flour tortilla.
+                        <br>Drink: Horchata
+                        <br>Side: Chili cheese fries
+                    </p>
+                    <p class="new">Price: 1840</p>
+                </div>
+                <div class="menu-item">
+                    <h4> Chipotle Beef Wrap </h4>
+                    <p>Chipotle-marinated beef, black beans, corn, shredded lettuce, cheddar cheese, chipotle sauce, flour tortilla.
+                        <br>Drink: Horchata
+                        <br>Side: Chili cheese fries
+                    </p>
+                    <p class="new">Price: 2030</p>
+                </div>
+            </div>
+        </div>
+        <div class="menu-section" id="dinner">
+            <h3> VEGGIE WRAPS </h3>
+            <div class="menu-item-container">
+                <div class="menu-item">
+                    <h4> Mediterranean Veggie Wrap </h4>
+                    <p> Hummus, feta cheese, cucumber, tomato, red onion, olives, spinach, whole wheat wrap.
+                        <BR>Drink: Pomegranate Juice
+                        <BR>Side: Zucchini fries
+                    </p>
+                    <p class="new">Price: 1230 </p>
+                    <br>
+                    <h4> Grilled Veggie Wrap </h4>
+                    <p>  Grilled zucchini, bell peppers, eggplant, red onion, goat cheese, balsamic glaze, flour tortilla.
+                    <br> Drink: Iced Green Tea
+                    <br> Side: Truffle fries
+                    </p>
+                    <p class="new">Price: 1190 </p>
+                </div>
+                <div class="menu-item">
+                    <h4> Falafel Wrap</h4>
+                    <p>Falafel, tzatziki sauce, lettuce, tomato, cucumber, red onion, pita wrap.
+                    <br>Drink: Mint Lemonade
+                    <br>Side: Sweet potato fries
+                    </p>
+                    <p class="new">Price: 1140 </p>
+                    <BR>
+                    <h4> Lobster Roll Wrap </h4>
+                    <p> Lobster salad, lettuce, celery, lemon aioli, whole wheat wrap.
+                        <BR>Drink:  Arnold Palmer (half iced tea, half lemonade)
+                        <BR>Side:  Sweet corn fries
+                    </p>
+                    <p class="new">Price: 1230 </p>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-section" id="drinks">
+            <h3>ADD-ONS </h3>
+            <div class="menu-item-container">
+                <div class="menu-item">
+                    <h4> Sauces & Dressings </h4>
+                    <p> Extra Ranch Dressing
+                        <span class="new-price">200</span>
+                        <br>Extra Caesar Dressing
+                        <span class="new-price">200</span>
+                        <br> Extra Buffalo Sauce
+                        <span class="new-price">200</span>
+                        <br> Extra BBQ Sauce
+                        <span class="new-price">200</span>
+                        <br> Extra Chipotle Mayo
+                        <span class="new-price">200</span>
+                    </p>
+                    <br>
+                    <h4> Fries </h4>
+                    <p> Regular Fries
+                        <span class="new-price">300</span>
+                        <br>Sweet Potato Fries
+                        <span class="new-price">300</span>
+                        <br>Curly Fries
+                        <span class="new-price">350</span>
+                        <br>Garlic Fries
+                        <span class="new-price">500</span>
+                        <br>Parmesan Garlic Fries
+                        <span class="new-price">500</span>
+                    </p>
+                </div>
+                <div class="menu-item">
+                    <h4> Drinks </h4>
+                    <p>Lemonade
+                        <span class="new-price">300</span>
+                        <br>Iced Tea
+                        <span class="new-price">350</span>
+                        <br>Green Tea
+                        <span class="new-price">400</span>
+                        <br>Mango Smoothie
+                        <span class="new-price">400</span>
+                        <br>Peach Iced Tea
+                        <span class="new-price">450</span>
+                        <br>Arnold Palmer (half iced tea, half lemonade)
+                        <span class="new-price">500</span>
+                    </p>
+                    <br>
+                    <h4> Extras </h4>
+                    <p> Bacon Bits
+                        <span class="new-price">300</span>
+                        <br>Crispy Onions
+                        <span class="new-price">300</span>
+                        <br>Sunflower Seeds
+                        <span class="new-price">300</span>
+                        <br>Dried Cranberries
+                        <span class="new-price">300</span>
+                        <br>Hard-Boiled Egg Slices
+                        <span class="new-price">300</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-map">
+                <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.0119082365964!2d67.0333464150007!3d24.860734384059755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f97bc7e2bf9%3A0xf4b2a7cfb6e91b0a!2sKarachi%2C%20Karachi%20City%2C%20Sindh%2C%20Pakistan!5e0!3m2!1sen!2s!4v1625060598305!5m2!1sen!2s"
+            width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+            <div class="footer-info">
+                <div class="address">
+                    <h3>Address</h3>
+                    <p>48 gulistan-e-johar<br>karachi, Pkaistan</p>
+                </div>
+                <div class="details">
+                    <h3>Details</h3>
+                    <ul>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="contact">
+                    <h3>Contact Us</h3>
+                    <p>+1 (800) 123-4567<br>info@wraps_nation.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© Copyright 2023 Powered By <a href="#">WEBSITE.COM</a></p>
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const cartIcon = document.querySelector('.cart');
+            const cartDropdown = document.querySelector('.cart-dropdown');
+            const cartCount = document.querySelector('.cart-count');
+            const totalAmount = document.querySelector('.total-amount');
+            const cartItemsContainer = document.querySelector('.cart-items');
+
+            let cart = [];
+
+            cartIcon.addEventListener('click', () => {
+                cartDropdown.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemName = e.target.getAttribute('data-name');
+                    const itemPrice = parseFloat(e.target.getAttribute('data-price'));
+
+                    addToCart(itemName, itemPrice);
+                });
+            });
+
+            function addToCart(name, price) {
+                const existingItem = cart.find(item => item.name === name);
+
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({ name, price, quantity: 1 });
+                }
+
+                updateCart();
+            }
+
+            function updateCart() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <h5>${item.name}</h5>
+                        <p>PKR ${item.price} x ${item.quantity}</p>
+                        <span class="remove-item" data-name="${item.name}">&times;</span>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+
+                    cartItem.querySelector('.remove-item').addEventListener('click', (e) => {
+                        removeFromCart(e.target.getAttribute('data-name'));
+                    });
+                });
+
+                totalAmount.textContent = `PKR ${total.toFixed(2)}`;
+                cartCount.textContent = cart.length;
+            }
+
+            function removeFromCart(name) {
+                cart = cart.filter(item => item.name !== name);
+                updateCart();
+            }
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            pagination: false,  // Disable pagination
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+                1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 40,
+                },
+            },
+        });
+    </script>
+
+</body>
+
+</html>
